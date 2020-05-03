@@ -1,0 +1,67 @@
+set tabstospaces # Tab key inserts spaces (Ctrl+t for verbatim mode)
+set tabsize 4    # Insert 4 spaces per tab
+set undo         # Enable undo/redo features
+set backup       # Backup files to filename~
+set autoindent   # Use auto-indentation
+set rebinddelete # Fix Backspace/Delete confusion problem
+set rebindkeypad # Fix numeric keypad key confusion problem.
+set const        # Constantly show the cursor position. 
+
+## The characters treated as closing brackets when justifying
+## paragraphs.  They cannot contain blank characters.  Only closing
+## punctuation, optionally followed by closing brackets, can end
+## sentences.
+##
+set brackets ""')>]}"
+
+## The opening and closing brackets that can be found by bracket
+## searches.  They cannot contain blank characters.  The former set must
+## come before the latter set, and both must be in the same order.
+##
+set matchbrackets "(<[{)>]}"
+
+## Make the Home key smarter.  When Home is pressed anywhere but at the
+## very beginning of non-whitespace characters on a line, the cursor
+## will jump to that beginning (either forwards or backwards).  If the
+## cursor is already at that position, it will jump to the true
+## beginning of the line.
+set smarthome
+
+## Use this spelling checker instead of the internal one.  This option
+## does not properly have a default value.
+##
+set speller "aspell -x -c"
+
+
+## Conky resaltado de sintaxis
+##
+syntax "Conky" "conkyrc[^/]*$"
+color brightblue "(use_spacer|background|use_xft|xftfont|xftalpha)"
+color brightblue "(mail_spool|update_interval|own_window)"
+color brightblue "(double_buffer|minimum_size)"
+color brightblue "(draw_(outline|borders|shades)|stippled_borders)"
+color brightblue "border_(margin|width)"
+color brightblue "default_((shade_|outline_)?color)"
+color brightblue "(alignment|gap_x|gap_y|no_buffers|uppercase)"
+color brightblue "^TEXT[[:space:]]*$"
+color brightred "[[:space:]]+(yes|no)[[:space:]]*"
+color brightred "(top_left|top_right|bottom_left|bottom_right)[[:space:]]*$"
+color magenta "[[:space:]]+([[:space:]]*([0-9]\.?))+[[:space:]]*"
+color brightred "\$\{?[a-zA-Z_0-9\# ]+\}?"
+color green "^[[:space:]]*#.*"
+color white "[[:space:]]+\#[0-9A-Fa-f]{6}"
+
+## Bourne shell scripts
+# Es "/usr/share/nano/sh.nanorc" mas un pequeño cambio
+syntax "sh" "\.sh$" ".bash[^/]*$" 
+header "^#!.*/(ba|k|pdk)?sh[-0-9_]*"
+icolor brightgreen "^[0-9A-Z_]+\(\)"
+color green "\<(case|do|done|elif|else|esac|exit|fi|for|function|if|in|local|read|return|select|shift|then|time|until|while)\>"
+color green "(\{|\}|\(|\)|\;|\]|\[|`|\\|\$|<|>|!|=|&|\|)"
+color green "-[Ldefgruwx]\>"
+color green "-(eq|ne|gt|lt|ge|le|s|n|z)\>"
+color brightblue "\<(cat|cd|chmod|chown|cp|echo|env|export|grep|install|let|ln|make|mkdir|mv|rm|sed|set|tar|touch|umask|unset)\>"
+icolor brightred "\$\{?[0-9A-Z_!@#$*?-]+\}?"
+color cyan "(^|[[:space:]])#.*$"
+color brightyellow ""(\\.|[^"])*"" "'(\\.|[^'])*'"
+color ,green "[[:space:]]+$"

@@ -1,0 +1,162 @@
+# To the extent possible under law, the author(s) have dedicated all
+# copyright and related and neighboring rights to this software to the
+# public domain worldwide. This software is distributed without any warranty.
+# You should have received a copy of the CC0 Public Domain Dedication along
+# with this software.
+# If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+
+# base-files version 4.1-1
+
+# ~/.bashrc: executed by bash(1) for interactive shells.
+
+# The latest version as installed by the Cygwin Setup program can
+# always be found at /etc/defaults/etc/skel/.bashrc
+
+# Modifying /etc/skel/.bashrc directly will prevent
+# setup from updating it.
+
+# The copy in your home directory (~/.bashrc) is yours, please
+# feel free to customise it to create a shell
+# environment to your liking.  If you feel a change
+# would be benifitial to all, please feel free to send
+# a patch to the cygwin mailing list.
+
+# User dependent .bashrc file
+
+# If not running interactively, don't do anything
+[[ "$-" != *i* ]] && return
+
+# Shell Options
+#
+# See man bash for more options...
+#
+# Don't wait for job termination notification
+set -o notify
+#
+# Don't use ^D to exit
+# set -o ignoreeof
+#
+# Use case-insensitive filename globbing
+shopt -s nocaseglob
+#
+# Make bash append rather than overwrite the history on disk
+# shopt -s histappend
+#
+# When changing directory small typos can be ignored by bash
+# for example, cd /vr/lgo/apaache would find /var/log/apache
+shopt -s cdspell
+
+# Completion options
+#
+# These completion tuning parameters change the default behavior of bash_completion:
+#
+# Define to access remotely checked-out files over passwordless ssh for CVS
+# COMP_CVS_REMOTE=1
+#
+# Define to avoid stripping description in --option=description of './configure --help'
+# COMP_CONFIGURE_HINTS=1
+#
+# Define to avoid flattening internal contents of tar files
+# COMP_TAR_INTERNAL_PATHS=1
+#
+# Uncomment to turn on programmable completion enhancements.
+# Any completions you add in ~/.bash_completion are sourced last.
+[[ -f /etc/bash_completion ]] && . /etc/bash_completion
+
+
+# History Options
+# ###############
+# HISTCONTROL (man 1 bash)
+# ignoreboth    causes Bash not to store duplicate commands in history.
+# ignorespace   to use a space to precede any command you don't want to remember in history.
+# ignoredups    setting ignores repeated lines
+# erasedups If that's set, no duplicates get entered in bash history at all (works on bash 3 or avove)
+export HISTCONTROL=ignoredups:ignorespace:ignoreboth:erasedups
+export HISTTIMEFORMAT="%h %d %H:%M:%S> "
+export HISTFILE="$HOME/.bash_history_`hostname`"   # hostname appended to bash history filename
+# HISTIGNORE is a colon-delimited list of patterns which should be excluded.
+# The '&' is a special pattern which suppresses duplicate entries.
+export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls:pwd:&:cd ~:cd ..:h:history' # Ignore the ls command as well
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+#  number of commands to save in a history list.
+# HISTSIZE: The number of commands to remember in the command history. The default value is 500.
+HISTSIZE=5000                                       # bash history will save N commands
+HISTFILESIZE=2000                                   # bash will remember N commands (number of lines)
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+#
+# Whenever displaying the prompt, write the previous line to disk
+# export PROMPT_COMMAND="history -a"
+
+# Custom prompt with git support
+color_prompt=yes
+
+if [ "$color_prompt" = yes ]; then
+
+  # GIT y git-completion.bash
+  if [ -f ${HOME}/.git-completion.sh ]; then
+    export GIT_PS1_SHOWDIRTYSTATE=true
+    export GIT_PS1_SHOWSTASHSTATE=true
+    export GIT_PS1_SHOWUNTRACKEDFILES=true
+    export GIT_PS1_SHOWUPSTREAM="auto"
+    source ${HOME}/.git-completion.sh
+  fi
+
+  if [ -f ${HOME}/.custom_prompt.sh ]; then
+    source ${HOME}/.custom_prompt.sh
+  fi
+
+else
+    PS1='\n(\u\)-(jobs:\j)-(\w)\n(! \!)->  '
+fi
+
+unset color_prompt
+
+# Para que complete después de sudo:
+complete -cf sudo
+
+# Alias definitions.
+#
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+if [ -f "${HOME}/.bash_aliases" ]; then
+   . ${HOME}/.bash_aliases
+fi
+
+# Functions definitions.
+#
+# You may want to put all your additions into a separate file like
+# ~/.bash_functions, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+if [ -f "${HOME}/.bash_functions" ]; then
+   . ${HOME}/.bash_functions
+fi
+
+
+# Umask
+#
+# /etc/profile sets 022, removing write perms to group + others.
+# Set a more restrictive umask: i.e. no exec perms for others:
+umask 027
+# Paranoid: neither group nor others have any perms:
+# umask 077
+
+# LESS man page colors -------------------------------------------------
+# #############
+export LESS="-MWi -x4 --shift 5 -FRSX"
+export LESSHISTFILE="-"                             # no less history file
+export LESS_TERMCAP_mb=$'\E[01;31m'                 # begin blinking
+export LESS_TERMCAP_md=$'\E[01;31m'                 # begin bold
+export LESS_TERMCAP_me=$'\E[0m'                     # end mode
+export LESS_TERMCAP_se=$'\E[0m'                     # end standout-mode
+export LESS_TERMCAP_so=$'\E[01;44;33m'              # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'                     # end underline
+export LESS_TERMCAP_us=$'\E[01;32m'                 # begin underline

@@ -1,0 +1,95 @@
+#############################
+#                           #
+#   DAR Configuration file  #
+#        DAR archiver       #
+#                           #
+#############################
+
+
+# Este archivo tiene que estar en $HOME/.darrc
+# Ejemplo de uso: dar -c $DESTINO/`date -I`_mi_copia -R $HOME/ -g $ORIGEN1/ -g $ORIGEN2/ dvd parchive
+
+create:
+
+# Comprimir con el algoritmo lzo
+# probar tambien con -zbzip2:9
+-zlzo
+
+# No comprimir archivos más pequeños de 256 bytes
+-m 256
+
+# Guardar la estructura de rirectorios aunque esten vacios
+--empty-dir
+
+# Generar archivo md5 de verificación del .dar creado
+--hash md5
+
+# the atime of every read file and directory is updated, and the ctime remains the same (del man)
+--alter=atime
+
+### Archivos que no se deben comprimir (porque ya estan comprimidos)
+
+# archivadores (Nota: .tar es un archivador, pero no está comprimido => entonces hay que comprimirlo).
+-Z "*.bz2" -Z "*.deb" -Z "*.gz" -Z "*.Z" -Z "*.zip" -Z "*.rar" -Z "*.tbz2" -Z "*.tgz" -Z "*.jar"
+-Z "*.BZ2" -Z "*.DEB" -Z "*.GZ" -Z "*.Z" -Z "*.ZIP" -Z "*.RAR" -Z "*.TBZ2" -Z "*.TGZ" -Z "*.JAR"
+
+-Z "*.ear" -Z "*.war" -Z "*.7z"
+-Z "*.EAR" -Z "*.WAR" -Z "*.7Z"
+
+# media - imagenes
+-Z "*.gif" -Z "*.jpeg" -Z "*.jpg" -Z "*.png" -Z "*.tif" -Z "*.tiff"
+-Z "*.GIF" -Z "*.PNG" -Z "*.JPEG" -Z "*.JPG" -Z "*.TIF" -Z "*.TIFF"
+
+# media - audio
+-Z "*.ogg" -Z "*.mp3"
+-Z "*.OGG" -Z "*.MP3"
+
+# media - video
+-Z "*.avi" -Z "*.mov" -Z "*.mp4" -Z "*.mpg"
+-Z "*.AVI" -Z "*.MOV" -Z "*.MP4" -Z "*.MPG"
+
+# documentos - formatos comprimidos
+-Z "*.swf" -Z "*.sxw"
+-Z "*.SWF" -Z "*.SXW"
+
+# ebook - formatos comprimidos
+-Z "*.pdf" -Z "*.djvu" -Z "*.opf" -Z "*.chm" -Z "*.epub" -Z "*.txtz" -Z "*.htmlz"
+-Z "*.PDF" -Z "*.DJVU" -Z "*.OPF" -Z "*.CHM" -Z "*.EPUB" -Z "*.TXTZ" -Z "*.HTMLZ"
+
+# comics - formatos comprimidos (Nota: .cbt = tar es un archivador, pero no está comprimido => entonces hay que comprimirlo).
+-Z "*.cbr" -Z "*.cbz" -Z "*.cba"
+-Z "*.CBR" -Z "*.CBZ" -Z "*.CBA"
+
+# formatos extraños, binarios and otros difíciles de comprimir
+-Z "*.gpg" -Z "*.rnd" -Z "*.scm" -Z "*.svgz" -Z "*.vlt" -Z "*.zargo" -Z "*.wings" -Z "*.xpi"
+-Z "*.GPG" -Z "*.RND" -Z "*.SCM" -Z "*.SVGZ" -Z "*.VLT" -Z "*.ZARGO" -Z "*.WINGS" -Z "*.XPI"
+
+-Z "*.obj"
+-Z "*.OBJ"
+
+### Archivos ignorados (no se incluyen en el backup)
+# *~ son backups, *.o archivos compilados
+-X "*~" -X "*.o"
+-X "*_all_*.*.dar" -X "*_diff_*.*.dar" -X "*_inc_*.*.dar"
+
+all:
+
+# para cualquier comando mostrar salida con más detalles
+-v
+
+encriptar:
+-K aes:
+
+verbose:
+-vs
+
+cd:
+# 1 slide x cd (700 mb) + espacio para el par
+-s 680M
+
+dvd:
+# 2 slides x dvd (4,7 gb) + espacio para el par / para evitar problemas con el tamaño de los archivos
+-s 2100M
+
+parchive:
+par2

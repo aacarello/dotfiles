@@ -1,0 +1,99 @@
+[user]
+    name = Nombre del Usuario
+    email = Mail del Usuario
+[core]
+    excludesfile = ~/.gitignore  # Global gitignore (archivos a excluir de los repositorios)
+
+    autocrlf = input
+    safecrlf = true
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+    #Editor preferido en cygwin
+    #editor = 'X:\Mis Aplicaciones\Notepad++Portable/Notepad++Portable.exe' -multiInst -notabbar -nosession -noPlugin
+
+[color]
+    ui = auto                   # covers diff = true, status = auto, branch = auto
+    interactive = auto
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+[alias]
+    unstage = reset HEAD
+    st = status
+    stt = status -s
+    rma = ls-files --deleted | xargs git rm
+    co = checkout
+    com = checkout master
+    ci = commit
+    cia = commit --amend
+    cs = commit -s # commit + sign
+    br = branch
+    sb = show-branch
+    cp = cherry-pick
+    staged = diff --cached
+    rb = rebase
+    rbc = rebase --continue
+    rbs = rebase --skip
+    rl = reflog
+    rs = remote show
+    rt = remote
+    ru = remote update
+    rp = remote prune
+    sm = submodule
+    in = fetch --dry-run
+    out = push --dry-run
+    ls = ls-files
+    ing = ls-files -o -i --exclude-standerd     # Show files ignored by git
+
+    #Alias log section
+    ll = log --stat --abbrev-commit
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    log-graph = log --all --graph --decorate
+    log-refs = log --all --graph --decorate --oneline --simplify-by-decoration --no-merges
+    log-timeline = log --format='%h %an %ar - %s'
+    log-local = log --oneline origin..HEAD
+    log-fetched = log --oneline HEAD..origin/master
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    ll1 = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    ll2 = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    lg1 = log --graph -10
+    lg2 = log --graph -25 --pretty=format:'%Cgreen%h %Creset%ad %Cblue%an %Creset%s'
+
+[push]
+    # 'git push' should only do the current branch, not all
+    default = current
+
+[difftool]
+    prompt = false
+
+[diff]
+    external = /home/alejandro/diff.py
+
+[merge]
+    conflictstyle = diff3
+
+[branch]
+    # tells git-branch and git-checkout to setup new branches so that git-pull(1)
+    # will appropriately merge from that remote branch.  Recommended.  Without this,
+    # you will have to add --track to your branch command or manually merge remote
+    # tracking branches with "fetch" and then "merge".
+    autosetupmerge = true
+
+[credential]
+# Set git to use the credential memory cache
+# Set the cache to timeout after 1 hour (setting is in seconds)
+# The credential helper only works when you clone an HTTPS repository URL
+    helper = cache --timeout=3600
